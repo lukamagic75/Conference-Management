@@ -5,11 +5,10 @@ import com.example.newconferencemanagement.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
-/**
- * 课程控制器类，处理课程相关的HTTP请求
- */
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
@@ -40,5 +39,10 @@ public class CourseController {
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
+    }
+
+    @GetMapping("/export")
+    public void exportCoursesToExcel(HttpServletResponse response) throws IOException {
+        courseService.exportCoursesToExcel(response);
     }
 }

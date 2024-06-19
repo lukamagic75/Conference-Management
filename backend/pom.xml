@@ -19,8 +19,8 @@
         <sonar.maven.plugin.version>3.9.1.2184</sonar.maven.plugin.version>
         <lombok.version>1.18.20</lombok.version>
         <mysql.connector.version>8.0.33</mysql.connector.version>
-        <jackson.version>2.12.3</jackson.version>
-        <junit.version>5.7.1</junit.version>
+        <jackson.version>2.13.0</jackson.version>
+        <junit.version>5.9.1</junit.version>
     </properties>
 
     <!-- 确保生成WAR文件 -->
@@ -97,6 +97,16 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         <!-- Gson for JSON -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -108,12 +118,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.76</version>
-        </dependency>
-        <!-- Apache Commons DBCP2 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-            <version>2.7.0</version>
         </dependency>
         <!-- JUnit 5 -->
         <dependency>
@@ -132,6 +136,22 @@
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>10.1.24</version>
         </dependency>
     </dependencies>
 
@@ -167,6 +187,12 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar.maven.plugin.version}</version>
+            </plugin>
+            <!-- Surefire Maven Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version> <!-- 确保使用最新版本 -->
             </plugin>
         </plugins>
     </build>

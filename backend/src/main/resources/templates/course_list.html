@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">课程管理</h1>
+    <div class="search-box">
+        <input type="text" id="courseNameSearch" class="form-control" placeholder="请输入课程名称">
+        <input type="text" id="courseOrderSearch" class="form-control" placeholder="请输入课程排序">
+        <button class="btn btn-primary" onclick="searchCourses()">搜索</button>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-success" onclick="showCreateCourseModal()">新增课程</button>
+        <button class="btn btn-secondary" onclick="exportCourses()">导出课程Excel</button>
+    </div>
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>课程名称</th>
+            <th>课程简介</th>
+            <th>课程排序</th>
+            <th>课程作者</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="course-list">
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.courseName}">课程名称</td>
+            <td th:text="${course.description}">课程简介</td>
+            <td th:text="${course.status}">课程排序</td>
+            <td th:text="${course.author}">课程作者</td>
+            <td>
+                <button class="btn btn-warning btn-sm" onclick="showEditCourseModal([[${course.id}]])">修改</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteCourse([[${course.id}]])">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 新增课程弹窗 -->
+<div class="modal fade" id="create-course-modal" tabindex="-1" aria-labelledby="createCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCourseModalLabel">新增课程</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="create-course-form">
+                    <div class="mb-3">
+                        <label for="courseName" class="form-label">课程名称:</label>
+                        <input type="text" class="form-control" id="courseName" name="courseName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">课程简介:</label>
+                        <input type="text" class="form-control" id="description" name="description">
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">课程作者:</label>
+                        <input type="text" class="form-control" id="author" name="author">
+                    </div>
+                    <div class="mb-3">
+                        <label for="coverImage" class="form-label">课程封面:</label>
+                        <input type="file" class="form-control" id="coverImage" name="coverImage">
+                    </div>
+                    <div class="mb-3">
+                        <label for="video" class="form-label">课程视频:</label>
+                        <input type="file" class="form-control" id="video" name="video">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="createCourse()">确定</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改课程弹窗 -->
+<div class="modal fade" id="edit-course-modal" tabindex="-1" aria-labelledby="editCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCourseModalLabel">修改课程</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-course-form">
+                    <input type="hidden" id="edit-course-id">
+                    <div class="mb-3">
+                        <label for="editCourseName" class="form-label">课程名称:</label>
+                        <input type="text" class="form-control" id="editCourseName" name="courseName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label">课程简介:</label>
+                        <input type="text" class="form-control" id="editDescription" name="description">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAuthor" class="form-label">课程作者:</label>
+                        <input type="text" class="form-control" id="editAuthor" name="author">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCoverImage" class="form-label">课程封面:</label>
+                        <input type="file" class="form-control" id="editCoverImage" name="coverImage">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editVideo" class="form-label">课程视频:</label>
+                        <input type="file" class="form-control" id="editVideo" name="video">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateCourse()">确定</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showCreateCourseModal() {
+        $('#create-course-modal').modal('show');
+    }
+
+    function createCourse() {
+        const form = $('#create-course-form')[0];
+        const formData = new FormData(form);
+        $.ajax({
+            url: '/courses',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function() {
+                alert('课程创建成功');
+                location.reload();
+            },
+            error: function() {
+                alert('课程创建失败');
+            }
+        });
+    }
+
+    function showEditCourseModal(courseId) {
+        $.get(`/courses/${courseId}`, function(data) {
+            $('#edit-course-id').val(data.id);
+            $('#editCourseName').val(data.courseName);
+            $('#editDescription').val(data.description);
+            $('#editAuthor').val(data.author);
+            $('#edit-course-modal').modal('show');
+        });
+    }
+
+    function updateCourse() {
+        const courseId = $('#edit-course-id').val();
+        const form = $('#edit-course-form')[0];
+        const formData = new FormData(form);
+        $.ajax({
+            url: `/courses/${courseId}`,
+            type: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function() {
+                alert('课程修改成功');
+                location.reload();
+            },
+            error: function() {
+                alert('课程修改失败');
+            }
+        });
+    }
+
+    function deleteCourse(courseId) {
+        if (confirm('是否确认删除该课程？')) {
+            $.ajax({
+                url: `/courses/${courseId}`,
+                type: 'DELETE',
+                success: function() {
+                    alert('课程删除成功');
+                    location.reload();
+                },
+                error: function() {
+                    alert('课程删除失败');
+                }
+            });
+        }
+    }
+
+    function exportCourses() {
+        if (confirm('是否确认导出所有课程管理数据项？')) {
+            window.location.href = '/courses/export';
+        }
+    }
+
+    function searchCourses() {
+        const courseName = $('#courseNameSearch').val();
+        const courseOrder = $('#courseOrderSearch').val();
+        // Implement the search logic here
+    }
+</script>
+</body>
+</html>

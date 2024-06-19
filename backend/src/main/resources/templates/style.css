@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    flex: 1;
+}
+
+.btn-group {
+    margin-bottom: 15px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.modal-lg {
+    max-width: 800px;
+}
+
+.modal .form-label {
+    margin-bottom: 0.5rem;
+}
+
+.modal .form-control {
+    margin-bottom: 1rem;
+}
