@@ -1,17 +1,15 @@
 package com.example.newconferencemanagement.dto;
 
-import com.example.newconferencemanagement.model.User;
-
 public class UserDTO {
     private Long id;
     private String username;
-    private String nickname;
-    private String phoneNumber;
+    private String password;
     private String email;
-    private String status;
+    private String phoneNumber;
+    private String gender;
+    private String role;
 
-    // Getters and setters
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -28,20 +26,12 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -52,31 +42,27 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getStatus() {
-        return status;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public User toEntity() {
-        User user = new User();
-        user.setId(this.id);
-        user.setUsername(this.username);
-        user.setNickname(this.nickname);
-        user.setPhoneNumber(this.phoneNumber);
-        user.setEmail(this.email);
-        user.setStatus(this.status);
-        return user;
+    public String getGender() {
+        return gender;
     }
 
-    public UserDTO(User user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.nickname = user.getNickname();
-        this.phoneNumber = user.getPhoneNumber();
-        this.email = user.getEmail();
-        this.status = user.getStatus();
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
